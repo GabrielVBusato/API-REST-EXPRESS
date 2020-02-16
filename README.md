@@ -1,4 +1,4 @@
-# API REST USER CONTROL
+# USER CONTROL AND MANAGEMENT
 
 Api Rest desenvolvida com express e nodejs para fins de estudo
 
