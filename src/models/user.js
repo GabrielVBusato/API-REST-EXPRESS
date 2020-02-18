@@ -1,11 +1,6 @@
 const mongoose = require('../database');
 const bcrypt = require('bcryptjs');
 
-const TokenSchema = new mongoose.Schema({
-    hash: String,
-    isValid: Boolean,
-})
-
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -27,7 +22,19 @@ const UserSchema = new mongoose.Schema({
         default: Date.now()
     },
     token: {
-        type: [TokenSchema],
+        type: String,
+    },
+    blackListedTokens: {
+        type: [String]
+    },
+    userConfig: {
+        type: {
+            theme: {
+            }
+        },
+        default: {
+            theme: 'dark'
+        }
     }
 })
 

@@ -1,6 +1,5 @@
 const User = require('../../models/user');
-require('dotenv').config()
-const { configUserToCreate, verifyUser, configUserToLogin } = require('./support')
+const { configUserToCreate, configUserToLogin, configUserToLogout } = require('./support')
 
 
 const register = async (req, res) => {
@@ -16,21 +15,21 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body
-        var user = await User.findOne({ email }).select('+password');
-
-        await verifyUser(user, password)
-
-        //Configurando usuário para logar
-        user = await configUserToLogin(user)
-        res.send({ user })
-
+        //Configurando e verificando usuário para logar
+        user = await configUserToLogin(req.body)
+        res.send(user)
     } catch (err) {
         res.status(400).send(err)
     }
 }
 
+const logout = async (req, res) => {
+    const msg = await configUserToLogout(req.userId)
+    res.status(200).send(msg)
+}
+
 module.exports = {
     register,
-    login
+    login,
+    logout
 }
