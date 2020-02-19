@@ -1,6 +1,5 @@
-const User = require('../../models/user');
 const { configUserToCreate, configUserToLogin, configUserToLogout } = require('./support')
-
+const jwt = require('jsonwebtoken')
 
 const register = async (req, res) => {
     try {
@@ -17,15 +16,15 @@ const login = async (req, res) => {
     try {
         //Configurando e verificando usuário para logar
         user = await configUserToLogin(req.body)
-        res.send(user)
+        return res.send(user)
     } catch (err) {
         res.status(400).send(err)
     }
 }
 
 const logout = async (req, res) => {
-    const msg = await configUserToLogout(req.userId)
-    res.status(200).send(msg)
+    const sucess = await configUserToLogout(req.userId)
+    res.status(200).send(sucess)
 }
 
 module.exports = {

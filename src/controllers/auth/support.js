@@ -5,7 +5,7 @@ require('dotenv').config()
 
 //Gerar token
 const generateToken = (id) => {
-    return jwt.sign({ id: id }, process.env.AUTH_JSON, { expiresIn: 86400 })
+    return jwt.sign({ id: id }, process.env.AUTH_JSON, { expiresIn: 80000 })
 }
 
 //Configurar usuário para criação
@@ -14,7 +14,7 @@ const configUserToCreate = async (body) => {
     var user = await User.create(body);
     user.token = generateToken(user.id)
     await user.save()
-    const { _id, __v, blackListedTokens, password, createdAt, ...data } = user._doc;
+    const { _id, __v, blackListedTokens, userClientConfig, password, createdAt, ...data } = user._doc;
     return data
 }
 
@@ -29,7 +29,6 @@ const verifyUser = async (body) => {
     if (!(await user.verifyPassword(password))) {
         throw { "err": 'Incorrect password' }
     }
-    console.log('a')
     return user
 }
 
@@ -50,7 +49,7 @@ const configUserToLogin = async (body) => {
     //Adicionando token
     user.token = generateToken(user.id);
     await user.save();
-    const { _id, __v, blackListedTokens, password, createdAt, ...data } = user._doc;
+    const { _id, __v, blackListedTokens, userClientConfig, password, createdAt, ...data } = user._doc;
     return data
 }
 

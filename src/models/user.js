@@ -27,10 +27,11 @@ const UserSchema = new mongoose.Schema({
     blackListedTokens: {
         type: [String]
     },
-    userConfig: {
+    userClientConfig: {
         type: {
             theme: {
-            }
+                
+            },
         },
         default: {
             theme: 'dark'
