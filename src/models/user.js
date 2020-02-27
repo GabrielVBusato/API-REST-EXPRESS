@@ -21,22 +21,12 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    token: {
-        type: String,
+    tokens: {
+        type: [String],
     },
     blackListedTokens: {
         type: [String]
     },
-    userClientConfig: {
-        type: {
-            theme: {
-                
-            },
-        },
-        default: {
-            theme: 'dark'
-        }
-    }
 })
 
 UserSchema.methods.verifyPassword = async function (pass) {

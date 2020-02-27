@@ -12,10 +12,11 @@ const generateToken = (id) => {
 const configUserToCreate = async (body) => {
     body.password = await bcrypt.hash(body.password, 10)
     var user = await User.create(body);
-    user.token = generateToken(user.id)
+    const token = generateToken(user.id)
+    user.tokens.push(token)
     await user.save()
-    const { _id, __v, blackListedTokens, userClientConfig, password, createdAt, ...data } = user._doc;
-    return data
+    const { _id, __v, tokens, blackListedTokens, userClientConfig, password, createdAt, ...data } = user._doc;
+    return { ...data, token }
 }
 
 //Autenticar usuário para login
@@ -32,26 +33,26 @@ const verifyUser = async (body) => {
     return user
 }
 
+//Configurar usuário para logar
+const configUserToLogin = async (body) => {
+    const user = await verifyUser(body)
+    const token = generateToken(user.id)
+    user.tokens.push(token)
+    await user.save();
+    const { _id, __v, tokens, blackListedTokens, userClientConfig, password, createdAt, ...data } = user._doc;
+    return { ...data, token }
+}
+
+
 //Configurar usuário para deslogar
-const configUserToLogout = async (id) => {
-    const user = await User.findOne({ _id: id})
-    user.blackListedTokens.push(user.token)
-    user.token = '';
+const configUserToLogout = async (req) => {
+    const user = await User.findOne({ _id: req.userId })
+    user.blackListedTokens.push(req.token)
+    user.tokens = user.tokens.filter((x) => x !== req.token)
     user.save()
     return { msg: 'User logged out.' }
 }
 
-//Configurar usuário para logar
-const configUserToLogin = async (body) => {
-    const user = await verifyUser(body)
-    user.blackListedTokens.push(user.token)
-
-    //Adicionando token
-    user.token = generateToken(user.id);
-    await user.save();
-    const { _id, __v, blackListedTokens, userClientConfig, password, createdAt, ...data } = user._doc;
-    return data
-}
 
 module.exports = {
     generateToken,

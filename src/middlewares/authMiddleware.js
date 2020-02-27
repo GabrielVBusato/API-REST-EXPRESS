@@ -12,9 +12,10 @@ const authMiddleware = async (req, res, next) => {
 
     await jwt.verify(token, AUTH_JSON, async function (err, decoded) {
         if (err || !(await tokenIsValid(decoded.id, token))) {
-            return res.status(500).send({ err: err ? err.message : 'Invalid token' })
+            return res.status(401).send({ err: err ? err.message : 'Invalid token' })
         }
         req.userId = decoded.id;
+        req.token = token
         return next();
 
     })
