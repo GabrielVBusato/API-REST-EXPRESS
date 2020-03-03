@@ -53,6 +53,9 @@ const configUserToLogout = async (req) => {
     return { msg: 'User logged out.' }
 }
 
+//Configurar usuário para recuperar senha
+
+
 
 module.exports = {
     generateToken,

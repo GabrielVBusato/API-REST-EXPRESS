@@ -1,13 +1,14 @@
-//Dotenv
+const express = require('express');
+const app = express();
 require('dotenv').config()
-
+var cors = require('cors')
 const { PORT } = process.env
+const path = require('path')
 
-const { authMiddleware } = require('./src/middlewares')
+app.use(express.json());
+app.use(cors())
+app.use('/auth/', express.static(path.resolve(__dirname, 'public/pages/auth')))
 
-
-//Server
-const app = require('./src/server')
 
 //Auth routes - login/register
 require('./src/server/routes/authRoutes')(app)

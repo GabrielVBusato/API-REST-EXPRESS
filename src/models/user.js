@@ -27,6 +27,14 @@ const UserSchema = new mongoose.Schema({
     blackListedTokens: {
         type: [String]
     },
+    passwordResetToken: {
+        type: String,
+        select: false
+    },
+    passwordResetTokenExpires: {
+        type: Date,
+        select: false
+    }
 })
 
 UserSchema.methods.verifyPassword = async function (pass) {

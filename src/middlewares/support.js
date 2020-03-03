@@ -1,7 +1,7 @@
 const User = require('../models/user')
 
 
-const tokenIsValid = async (id, token) => {
+const tokenIsValid = async (id, token, ) => {
     const user = await User.findOne({ _id: id })
     if (!user) {
         return false;
