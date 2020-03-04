@@ -1,9 +1,9 @@
 const authMiddleware = require('./authMiddleware')
 const authMiddlewareLogin = require('./authMiddlewareLogin')
-const changePassMiddleware = require('./changePassMiddleware')
+const confirmPassMiddleware = require('./confirmPassMiddleware')
 
 module.exports = {
     authMiddleware,
     authMiddlewareLogin,
-    changePassMiddleware
+    confirmPassMiddleware
 }
